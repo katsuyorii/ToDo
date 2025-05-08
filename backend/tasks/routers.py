@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 from src.dependency import get_db
 
@@ -17,6 +17,6 @@ tasks_router = APIRouter(
 async def get_tasks(db: AsyncSession = Depends(get_db)):
     return await read_tasks(db)
 
-@tasks_router.post('/', response_model=TaskResponse)
+@tasks_router.post('/', response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 async def create_task(task_data: TaskCreate, db: AsyncSession = Depends(get_db)):
     return await add_task(task_data, db)
