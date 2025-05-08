@@ -3,7 +3,11 @@ from pydantic import BaseModel, Field, ConfigDict, field_serializer
 from datetime import datetime
 
 
-class TaskResponse(BaseModel):
+class TaskORMSchema(BaseModel):
+    ''' Basic pydantic schema with model_config '''
+    model_config = ConfigDict(from_attributes=True)
+
+class TaskResponseSchema(TaskORMSchema):
     id: int
     title: str
     description: str | None
@@ -14,8 +18,6 @@ class TaskResponse(BaseModel):
     def serialize_created_at(self, value: datetime, _info):
         return value.strftime('%d.%m.%Y %H:%M')
 
-    model_config = ConfigDict(from_attributes=True)
-
-class TaskCreate(BaseModel):
+class TaskCreateSchema(BaseModel):
     title: str = Field(max_length=255)
     description: str | None = Field(default=None)
