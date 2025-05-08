@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, status
 from src.dependencies import get_db
 
 from .schemas import TaskCreateSchema, TaskResponseSchema, TaskUpdateSchema
-from .services import read_tasks, add_task, remove_task, edit_task
+from .services import read_tasks, read_task, add_task, remove_task, edit_task
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,6 +16,10 @@ tasks_router = APIRouter(
 @tasks_router.get('/', response_model=list[TaskResponseSchema])
 async def get_tasks(db: AsyncSession = Depends(get_db)):
     return await read_tasks(db)
+
+@tasks_router.get('/{task_id}', response_model=TaskResponseSchema)
+async def get_task(task_id: int, db: AsyncSession = Depends(get_db)):
+    return await read_task(task_id, db)
 
 @tasks_router.post('/', response_model=TaskResponseSchema, status_code=status.HTTP_201_CREATED)
 async def create_task(task_data: TaskCreateSchema, db: AsyncSession = Depends(get_db)):

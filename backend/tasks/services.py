@@ -11,6 +11,14 @@ async def read_tasks(db: AsyncSession) -> list[TaskModel]:
     result = await db.execute(select(TaskModel))
     return result.scalars().all()
 
+async def read_task(task_id: int, db: AsyncSession) -> TaskModel | None:
+    task = await get_task_by_id(task_id, db)
+
+    if task is None:
+        raise TASK_NOT_FOUND
+    
+    return task
+
 async def add_task(task_data: TaskCreateSchema, db: AsyncSession) -> TaskModel:
     new_task = TaskModel(**task_data.model_dump(exclude_unset=True))
 
