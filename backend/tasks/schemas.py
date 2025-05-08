@@ -21,3 +21,8 @@ class TaskResponseSchema(TaskORMSchema):
 class TaskCreateSchema(BaseModel):
     title: str = Field(max_length=255)
     description: str | None = Field(default=None)
+
+class TaskUpdateSchema(BaseModel):
+    title: str | None = Field(max_length=255, default=None)
+    description: str | None = Field(default=None)
+    status: bool | None = Field(default=None)
