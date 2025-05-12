@@ -27,3 +27,12 @@ async def add_category(category_data: CategoryCreateSchema, db: AsyncSession) ->
     await db.refresh(new_category)
 
     return new_category
+
+async def remove_category(category_id: int, db: AsyncSession) -> None:
+    category = await get_category_by_id(category_id, db)
+
+    if category is None:
+        raise CATEGORY_NOT_FOUND
+    
+    await db.delete(category)
+    await db.commit()
