@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class CategoryORMSchema(BaseModel):
@@ -8,3 +8,6 @@ class CategoryORMSchema(BaseModel):
 class CategoryResponseSchema(CategoryORMSchema):
     id: int
     name: str
+
+class CategoryCreateSchema(BaseModel):
+    name: str = Field(max_length=128)

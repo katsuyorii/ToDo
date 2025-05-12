@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from sqlalchemy import select
 
 from .models import TaskModel
@@ -8,7 +9,7 @@ from .exceptions import TASK_NOT_FOUND
 
 
 async def read_tasks(db: AsyncSession) -> list[TaskModel]:
-    result = await db.execute(select(TaskModel))
+    result = await db.execute(select(TaskModel).options(selectinload(TaskModel.category)))
     return result.scalars().all()
 
 async def read_task(task_id: int, db: AsyncSession) -> TaskModel | None:
@@ -24,7 +25,7 @@ async def add_task(task_data: TaskCreateSchema, db: AsyncSession) -> TaskModel:
 
     db.add(new_task)
     await db.commit()
-    await db.refresh(new_task)
+    await db.refresh(new_task, attribute_names=['category'])
 
     return new_task
 
