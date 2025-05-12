@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from .models import CategoryModel
-from .schemas import CategoryCreateSchema
+from .schemas import CategoryCreateSchema, CategoryUpdateSchema
 from .utils import get_category_by_id
 from .exceptions import CATEGORY_NOT_FOUND
 
@@ -36,3 +36,17 @@ async def remove_category(category_id: int, db: AsyncSession) -> None:
     
     await db.delete(category)
     await db.commit()
+
+async def edit_category(category_id: int, updated_category_data: CategoryUpdateSchema, db: AsyncSession) -> CategoryModel:
+    category = await get_category_by_id(category_id, db)
+
+    if category is None:
+        raise CATEGORY_NOT_FOUND
+    
+    for key, value in updated_category_data.model_dump(exclude_unset=True).items():
+        setattr(category, key, value)
+
+    await db.commit()
+    await db.refresh(category)
+
+    return category

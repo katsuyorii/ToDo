@@ -11,3 +11,6 @@ class CategoryResponseSchema(CategoryORMSchema):
 
 class CategoryCreateSchema(BaseModel):
     name: str = Field(max_length=128)
+
+class CategoryUpdateSchema(BaseModel):
+    name: str | None = Field(default=None, max_length=128)
