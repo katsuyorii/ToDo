@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict, field_serializer, field_validator, E
 from datetime import datetime
 
 from .models import UserRoleEnum
+from .validators import validation_password
 
 
 class UserORMSchema(BaseModel):
@@ -23,3 +24,8 @@ class UserResponseSchema(UserORMSchema):
 class UserRegistrationSchema(BaseModel):
     email: EmailStr
     password: str
+
+    @field_validator('password')
+    @classmethod
+    def validate_user_password(cls, value: str) -> str:
+        return validation_password(value)
