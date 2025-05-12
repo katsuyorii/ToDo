@@ -12,6 +12,7 @@ from src.config import settings
 
 from tasks.models import TaskModel
 from categories.models import CategoryModel
+from users.models import UserModel
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
