@@ -12,8 +12,8 @@ class UserORMSchema(BaseModel):
 
 class UserResponseSchema(UserORMSchema):
     email: str
-    last_name: str
-    first_name: str
+    last_name: str | None
+    first_name: str | None
     role: UserRoleEnum
     created_at: datetime
 
