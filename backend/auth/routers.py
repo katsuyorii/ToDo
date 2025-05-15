@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 
 from users.schemas import UserRegistrationSchema, UserLoginSchema
 
@@ -21,5 +21,5 @@ async def registration_user(user_data: UserRegistrationSchema, db: AsyncSession 
     return {'message': 'Пользователь успешно зарегестрирован!'}
 
 @auth_router.post('/login', response_model=JWTTokenSchema)
-async def login_user(user_data: UserLoginSchema, db: AsyncSession = Depends(get_db)):
-    return await login(user_data, db)
+async def login_user(user_data: UserLoginSchema, response: Response, db: AsyncSession = Depends(get_db)):
+    return await login(user_data, response, db)
