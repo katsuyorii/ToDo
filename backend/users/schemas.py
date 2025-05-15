@@ -29,3 +29,7 @@ class UserRegistrationSchema(BaseModel):
     @classmethod
     def validate_user_password(cls, value: str) -> str:
         return validation_password(value)
+
+class UserLoginSchema(BaseModel):
+    email: EmailStr
+    password: str
